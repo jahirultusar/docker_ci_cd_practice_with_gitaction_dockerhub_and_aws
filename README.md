@@ -1,0 +1,1 @@
+[![CI Pipeline](https://github.com/jahirultusar/docker_ci_cd_practice_with_gitaction_dockerhub_and_aws/actions/workflows/ci.yml/badge.svg)](https://github.com/jahirultusar/docker_ci_cd_practice_with_gitaction_dockerhub_and_aws/actions/workflows/ci.yml)
