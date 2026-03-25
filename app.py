@@ -1,20 +1,38 @@
-from flask import Flask, request
+import os
 import datetime
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
+# --- ROUTES ---
+
 @app.route('/')
 def index():
-    # Log the incoming request details
-    time = datetime.datetime.now()
-    print(f"[{time}] Incoming request from IP: {request.remote_addr} | User-Agent: {request.headers.get('User-Agent')}")
-    return "Welcome to the Machine - Logging Enabled"
+    """
+    Main Landing Page: Renders the Bootstrap-enabled dashboard.
+    """
+    # Log incoming requests to the terminal (viewable via 'docker logs')
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    user_ip = request.remote_addr
+    user_agent = request.headers.get('User-Agent')
+    
+    print(f"[{timestamp}] GET / - Request from: {user_ip} | Browser: {user_agent}")
+    
+    # Renders templates/index.html which extends templates/base.html
+    return render_template('index.html', title="Control Panel")
 
 @app.route('/health')
 def health_check():
-    # In a real app, you'd check DB connections here
-    # For now, if this code runs, the app is "Healthy"
-    return {"status": "healthy", "uptime": "up"}, 200
+    """
+    Objective 4: Health Check Endpoint.
+    Used by the Dockerfile HEALTHCHECK instruction.
+    """
+    # Returns 200 OK with a JSON body
+    return jsonify(status="healthy", timestamp=datetime.datetime.now().isoformat()), 200
+
+# --- EXECUTION ---
 
 if __name__ == '__main__':
+    # Objective 2: Ensure the app listens on all interfaces (0.0.0.0) 
+    # and matches the port used in your Dockerfile/Security Group (5001)
     app.run(host='0.0.0.0', port=5001)
