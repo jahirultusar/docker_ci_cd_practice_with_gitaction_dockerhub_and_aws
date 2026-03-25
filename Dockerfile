@@ -1,6 +1,9 @@
 # Base image
 FROM python:3.11-alpine
 
+# Install curl so the HEALTHCHECK can work
+RUN apk add --no-cache curl
+
 # Directory setup
 WORKDIR /app
 
@@ -11,6 +14,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # copy files
 COPY . .
+
+# This will ping the container every 30 sec to check health
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD curl -f http://localhost:5001/health || exit 1
 
 # Run the app
 CMD ["python", "app.py"]
