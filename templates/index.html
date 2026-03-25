@@ -4,15 +4,17 @@
 <div class="row">
     <div class="col-sm-12 text-center">
         <h2>Warp Core Status: <span class="label label-success">HEALTHY</span> | Matter/Antimatter Ratio: 1:1</h2>
-        <p>[Scanning Port 5001 for incoming subspace signals... 🛰️]</p>
+        <p></p>
     </div>
 </div>
+<!--Space div-->
+<div style="height: 20px;"></div> 
 
 <div class="row">
     <div class="col-sm-12">
         <div class="panel panel-inverse" style="background: #222; color: #00ff00; border: 1px solid #444;">
             <div class="panel-heading" style="background: #333; color: #fff; display: flex; justify-content: space-between; align-items: center;">
-                <h3 class="panel-title" style="display: inline-block;">📟 Live System Logs</h3>
+                <h3 class="panel-title" style="display: inline-block;">📟 Live System Logs <small>[scanning port 5001 for incoming subspace signals... 🛰️]</small></h3>
                 <!-- The Clear Button -->
                 <button class="btn btn-xs btn-danger" onclick="clearLogs()" style="float: right;">Clear Console</button>
             </div>
@@ -25,7 +27,7 @@
 <div class="col-sm-6">
     <div class="panel panel-success">
         <div class="panel-heading">
-            <h3 class="panel-title">🛡️ Health Diagnostics</h3>
+            <h3 class="panel-title">🛡️ App Health Diagnostics</h3>
         </div>
         <div class="panel-body">
             <p><strong>Status:</strong> <span class="label label-success" id="health-status">Checking...</span></p>
@@ -58,7 +60,7 @@
             .then(data => {
                 const logWindow = document.getElementById('log-window');
                 if (data.length === 0) {
-                    logWindow.innerHTML = '<span class="text-muted">Console empty. Refresh page to see traffic..</span>';
+                    logWindow.innerHTML = '<span class="text-muted">Console empty. Waiting for traffic...</span>';
                 } else {
                     logWindow.innerHTML = data.join('<br>');
                 }

@@ -19,7 +19,7 @@ COPY . .
 HEALTHCHECK --interval=30s --timeout=3s \
   CMD curl -f http://localhost:5001/health || exit 1
 
-# Arguments passed during build
+# Arguments passed during build 
 ARG GIT_HASH
 ARG BUILD_TIME
 

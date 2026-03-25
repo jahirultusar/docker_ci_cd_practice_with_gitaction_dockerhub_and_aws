@@ -16,7 +16,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-
+      # this will short the git hash
       - name: Set Short Git Hash
         id: vars
         run: echo "sha_short=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
@@ -27,7 +27,7 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/docker_ci_cd_practice:latest
-          # This is the magic part: injecting the metadata
+          # injecting the metadata
           build-args: |
             GIT_HASH=${{ steps.vars.outputs.sha_short }}
             BUILD_TIME=${{ github.event.head_commit.timestamp }}

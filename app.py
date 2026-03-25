@@ -11,7 +11,7 @@ start_time = time.time()
 
 # --- ROUTES ---
 
-# Define the storage list at the TOP of your file (outside any functions)
+# Define the storage list
 logs_store = []
 
 @app.route('/')
