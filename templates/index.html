@@ -3,9 +3,109 @@
 {% block content %}
 <div class="row">
     <div class="col-sm-12 text-center">
-        <h2>Warp Core Status: <span class="label label-success">HEALTHY</span></h2>
-        <h4>Matter/Antimatter Ratio: 1:1</h4>
-        <p>Scanning Port 5001 for incoming subspace signals... 🛰️</p>
+        <h2>Warp Core Status: <span class="label label-success">HEALTHY</span> | Matter/Antimatter Ratio: 1:1</h2>
+        <p>[Scanning Port 5001 for incoming subspace signals... 🛰️]</p>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-inverse" style="background: #222; color: #00ff00; border: 1px solid #444;">
+            <div class="panel-heading" style="background: #333; color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                <h3 class="panel-title" style="display: inline-block;">📟 Live System Logs</h3>
+                <!-- The Clear Button -->
+                <button class="btn btn-xs btn-danger" onclick="clearLogs()" style="float: right;">Clear Console</button>
+            </div>
+            <div class="panel-body" id="log-window" style="font-family: 'Courier New', Courier, monospace; height: 180px; overflow-y: auto; padding: 15px;">
+                Loading signals...
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-sm-6">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">🛡️ Health Diagnostics</h3>
+        </div>
+        <div class="panel-body">
+            <p><strong>Status:</strong> <span class="label label-success" id="health-status">Checking...</span></p>
+            <p><strong>Uptime:</strong> <span id="uptime-stat">0s</span></p>
+            <p><strong>Process ID:</strong> <code id="pid-stat">...</code></p>
+            <p><strong>Last Check:</strong> <small class="text-muted" id="last-check">Never</small></p>
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-6">
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h3 class="panel-title">🌐 Network Telemetry</h3>
+        </div>
+        <div class="panel-body">
+            <p><strong>Container ID:</strong> <code id="container-id">...</code></p>
+            <p><strong>Internal IP:</strong> <span id="internal-ip">0.0.0.0</span></p>
+            <p><strong>Your Public IP:</strong> <span id="client-ip" class="text-primary">detecting...</span></p>
+            <p><strong>Node Time:</strong> <span id="node-time">--:--:--</span></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1. Function to Fetch Logs
+    function updateLogs() {
+        fetch('/api/logs')
+            .then(response => response.json())
+            .then(data => {
+                const logWindow = document.getElementById('log-window');
+                if (data.length === 0) {
+                    logWindow.innerHTML = '<span class="text-muted">Console empty. Refresh page to see traffic..</span>';
+                } else {
+                    logWindow.innerHTML = data.join('<br>');
+                }
+            });
+    }
+
+    // 2. Function to Clear Logs
+    function clearLogs() {
+        if (confirm("Are you sure you want to clear the live console?")) {
+            fetch('/api/logs/clear', { method: 'POST' })
+                .then(() => updateLogs());
+        }
+    }
+
+    // Refresh every 2 seconds
+    setInterval(updateLogs, 2000);
+    updateLogs(); 
+
+        function updateHealth() {
+        const startTime = Date.now();
+        fetch('/api/health/stats')
+            .then(response => response.json())
+            .then(data => {
+                const latency = Date.now() - startTime;
+                document.getElementById('health-status').innerText = data.status;
+                document.getElementById('uptime-stat').innerText = data.uptime;
+                document.getElementById('pid-stat').innerText = data.pid;
+                document.getElementById('last-check').innerText = new Date().toLocaleTimeString() + " (" + latency + "ms)";
+            });
+    }
+
+    // Update health every 10 seconds
+    setInterval(updateHealth, 10000);
+    updateHealth();
+        function updateNetwork() {
+        fetch('/api/network/stats')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('container-id').innerText = data.container_id;
+                document.getElementById('internal-ip').innerText = data.internal_ip;
+                document.getElementById('client-ip').innerText = data.latest_client;
+                document.getElementById('node-time').innerText = data.server_time;
+            });
+    }
+
+    // Update network every 15 seconds
+    setInterval(updateNetwork, 15000);
+    updateNetwork();
+</script>
 {% endblock %}

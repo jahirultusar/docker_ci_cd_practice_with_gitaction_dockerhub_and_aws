@@ -47,10 +47,15 @@
                     <a class="navbar-brand" href="/">🤖 The Machine</a>
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="/">Dashboard</a></li>
-                        <li><a href="/health" target="_blank">Health API</a></li>
-                    </ul>
+            <ul class="nav navbar-nav">
+                <!-- Dashboard link stays active -->
+                <li class="active"><a href="/">Dashboard</a></li>
+                <!-- Anchor links to sections on the same page -->
+                <li><a href="#diagnostics">Diagnostics</a></li>
+                <li><a href="#console">Live Console</a></li>
+                <!-- External link to the actual JSON API -->
+                <li><a href="/health" target="_blank">Health API (Raw)</a></li>
+            </ul>
                 </div>
             </div>
         </nav>
@@ -66,12 +71,10 @@
     </div> <!-- End of content-wrapper -->
 
     <footer class="text-center">
-        <p>Node: <strong>AWS EC2</strong> | Engine: <strong>Docker</strong> | CI/CD: <strong>GitHub Actions</strong></p>
-        <small>
-            Version: <code>{{ git_hash }}</code> | 
-            Deployed: {{ build_time }}
-        </small>
-    </footer>
+        <p>Node: <strong>AWS EC2</strong> | Engine: <strong>Docker</strong> | CI/CD: <strong>GitHub Actions</strong> | Version: <code>{{ git_hash }}</code> | 
+            Deployed: {{ build_time }} | Maker: <strong>Jay I</strong></p>
+
+        </footer>
 
 </body>
 </html>
