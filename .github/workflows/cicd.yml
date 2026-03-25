@@ -22,8 +22,11 @@ jobs:
         with:
           context: .
           push: true
-          # Make sure this matches your Hub username/repo
           tags: ${{ secrets.DOCKER_USERNAME }}/docker_ci_cd_practice:latest
+          # This is the magic part: injecting the metadata
+          build-args: |
+            GIT_HASH=${{ github.sha }}
+            BUILD_TIME=${{ github.event.head_commit.timestamp }}
 
   deploy:
     needs: build-and-push # The "CD" only starts if the "CI" passes!

@@ -1,25 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}The Machine{% endblock %}</title>
-    <!-- Bootstrap 5 CSS CDN -->
-    <link href="https://cdn.jsdelivr.net" rel="stylesheet">
+  <title>{% block title %}The Machine{% endblock %}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <style>
+    /* 1. Make the body take up at least the full screen height */
+    html, body {
+      height: 100%;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+    /* 2. Make the main content area grow to fill available space */
+    .content-wrapper {
+      flex: 1 0 auto;
+    }
+    /* 3. Style the footer */
+    footer {
+      flex-shrink: 0;
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+    .navbar { margin-bottom: 0; border-radius: 0; }
+  </style>
 </head>
-<body class="bg-light">
-    <nav class="navbar navbar-dark bg-dark mb-4">
-        <div class="container">
-            <a class="navbar-brand" href="/">The Machine Control Panel</a>
+
+<body>
+
+    <!-- Wrap everything EXCEPT the footer in a div -->
+    <div class="content-wrapper">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>                        
+                    </button>
+                    <a class="navbar-brand" href="/">🤖 The Machine</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/">Dashboard</a></li>
+                        <li><a href="/health" target="_blank">Health API</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="jumbotron text-center">
+            <h1>{% block header %}Control Panel{% endblock %}</h1>
+            <p>Containerised • Automated • Monitored</p> 
         </div>
-    </nav>
+        
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </div> <!-- End of content-wrapper -->
 
-    <div class="container">
-        {% block content %}{% endblock %}
-    </div>
-
-    <footer class="text-center mt-5 py-3 text-muted">
-        <small>Jay's Dockerized & CI/CD Automated</small>
+    <footer class="text-center">
+        <p>Node: <strong>AWS EC2</strong> | Engine: <strong>Docker</strong> | CI/CD: <strong>GitHub Actions</strong></p>
+        <small>
+            Version: <code>{{ git_hash }}</code> | 
+            Deployed: {{ build_time }}
+        </small>
     </footer>
+
 </body>
 </html>

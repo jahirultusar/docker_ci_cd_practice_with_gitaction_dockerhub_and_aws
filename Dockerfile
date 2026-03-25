@@ -19,5 +19,13 @@ COPY . .
 HEALTHCHECK --interval=30s --timeout=3s \
   CMD curl -f http://localhost:5001/health || exit 1
 
+# Arguments passed during build
+ARG GIT_HASH
+ARG BUILD_TIME
+
+# Convert them to Environment Variables
+ENV GIT_HASH=$GIT_HASH
+ENV BUILD_TIME=$BUILD_TIME
+
 # Run the app
 CMD ["python", "app.py"]

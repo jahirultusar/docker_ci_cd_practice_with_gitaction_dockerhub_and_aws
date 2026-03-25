@@ -12,6 +12,8 @@ def index():
     Main Landing Page: Renders the Bootstrap-enabled dashboard.
     """
     # Log incoming requests to the terminal (viewable via 'docker logs')
+    build_date = os.getenv('BUILD_DATE', 'Unknown')
+    git_hash = os.getenv('GIT_HASH', 'unknown')
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     user_ip = request.remote_addr
     user_agent = request.headers.get('User-Agent')
@@ -19,7 +21,7 @@ def index():
     print(f"[{timestamp}] GET / - Request from: {user_ip} | Browser: {user_agent}")
     
     # Renders templates/index.html which extends templates/base.html
-    return render_template('index.html', title="Control Panel")
+    return render_template('index.html', build_date=build_date, git_hash=git_hash)
 
 @app.route('/health')
 def health_check():
