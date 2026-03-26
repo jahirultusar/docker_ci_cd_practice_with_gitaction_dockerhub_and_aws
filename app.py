@@ -105,5 +105,5 @@ def network_stats():
 
 if __name__ == '__main__':
     # Ensure the app listens on all interfaces (0.0.0.0) 
-    # and matches the port used in your Dockerfile/Security Group (5001)
+    # and matches the port used in your Dockerfile/ Security Group (5001)
     app.run(host='0.0.0.0', port=5001)
